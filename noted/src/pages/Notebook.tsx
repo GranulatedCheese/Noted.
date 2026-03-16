@@ -331,7 +331,7 @@ export default function Notebook() {
         <div className="absolute inset-0 z-0">
           {activePageId ? (
             <Tldraw
-              persistenceKey={`noted-page-${activePageId}`}
+              persistenceKey={`noted-production-${activePageId}`}
               components={{
                 PageMenu: null,
                 Toolbar: null,
