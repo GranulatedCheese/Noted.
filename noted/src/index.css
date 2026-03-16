@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+
+@import "tailwindcss";
+
+/* Fix for Tailwind v4 manual dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Map our custom fonts to Tailwind utility classes (e.g., font-manrope) */
+@theme {
+  --font-raleway: "Raleway", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+}
+
+@layer base {
+  /* Applying the fonts and our Fanfan Light / Discord Dark theme */
+  body {
+    @apply bg-[#fafaf9] text-zinc-900 font-manrope transition-colors duration-200 ease-in-out;
+  }
+
+  .dark body {
+    @apply bg-[#313338] text-gray-100;
+  }
+}
+
+/* Your custom button hover animations */
+button:hover {
+  @apply -translate-y-1 scale-110 transition duration-150 delay-75;
+}
