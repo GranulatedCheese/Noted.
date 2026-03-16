@@ -180,7 +180,7 @@ export default function Backpack() {
             <div className="p-6 flex-1 space-y-4">
               <div>
                 <label className="block text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-2 flex items-center gap-2">
-                  <Key size={16} /> API Key (Gemini or OpenAI)
+                  <Key size={16} /> API Key (Gemini only)
                 </label>
                 <input
                   type="password"
