@@ -10,8 +10,6 @@ Noted. is a modern, high-performance canvas application built with **tldraw**. I
 
 - **Gestural Intelligence**: Draw a "sloppy" box to solve equations or an underline to define terms.
 - **Spatial Context**: AI responses appear as persistent, styled shapes directly next to your notes.
-- **Quantitative Focus**: Built for CS, Physics, and Quant Finance workflows.
-- **Local-First**: Fast, responsive canvas with persistent page management and local storage security.
 
 ---
 
