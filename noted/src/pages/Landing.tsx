@@ -19,7 +19,7 @@ export default function Landing() {
     <div className="min-h-screen bg-[#fafaf9] dark:bg-[#313338] text-zinc-900 dark:text-gray-100 transition-colors duration-300 flex flex-col font-sans">
       {/* navbar */}
       <nav className="flex items-center justify-between p-6 max-w-7xl w-full mx-auto">
-        <div className="text-2xl font-black tracking-tight">Noted.</div>
+        <div className="text-2xl font-black tracking-tight">noted.</div>
         <button
           onClick={() => setIsDarkMode(!isDarkMode)}
           className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-[#2b2d31] transition"

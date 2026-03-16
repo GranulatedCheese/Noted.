@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-import { clsx } from "clsx";
 import {
   Tldraw,
   useEditor,

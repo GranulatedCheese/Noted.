@@ -65,7 +65,7 @@ export default function Backpack() {
           <div
             className={`transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap ${isSidebarOpen ? "w-32 opacity-100 translate-x-0" : "w-0 opacity-0 -translate-x-8"}`}
           >
-            <span className="font-black text-xl tracking-tight">Noted.</span>
+            <span className="font-black text-xl tracking-tight">noted.</span>
           </div>
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
