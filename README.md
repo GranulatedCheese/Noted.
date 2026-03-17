@@ -8,7 +8,7 @@ Noted. is a modern, high-performance canvas application built with **tldraw**. I
 
 ## ✨ Features
 
-- **Gestural Intelligence**: Draw a "sloppy" box to solve equations or an underline to define terms.
+- **Markup Intelligence**: Draw a box to solve equations or an underline to define terms.
 - **Spatial Context**: AI responses appear as persistent, styled shapes directly next to your notes.
 
 ---
