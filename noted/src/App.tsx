@@ -5,7 +5,8 @@ import Notebook from "./pages/Notebook";
 
 function App() {
   return (
-    <Router basename="/Noted./">
+    <Router>
+      {/* basename="/Noted./" */}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/backpack" element={<Backpack />} />

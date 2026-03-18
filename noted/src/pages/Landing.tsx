@@ -60,16 +60,16 @@ export default function Landing() {
             <PenTool className="text-[#5865F2] mb-4" size={32} />
             <h3 className="text-xl font-bold mb-2">Underline to Define</h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Mark complex terms like "Chromatic Scale" and context-aware
-              definitions will appear right alongside your handwriting.
+              Mark complex terms or phrases and context-aware definitions will
+              appear right alongside your handwriting.
             </p>
           </div>
           <div className="p-6 rounded-2xl border-2 border-zinc-200 dark:border-[#1e1f22] bg-white dark:bg-[#2b2d31]">
             <BoxSelect className="text-[#5865F2] mb-4" size={32} />
             <h3 className="text-xl font-bold mb-2">Box to Solve</h3>
             <p className="text-zinc-600 dark:text-zinc-400">
-              Draw a box around an integral or polynomial. Noted generates
-              step-by-step examples based on your exact equation.
+              Draw a box around any equations or problems. Noted generates
+              step-by-step examples based on your similar problems.
             </p>
           </div>
         </div>
