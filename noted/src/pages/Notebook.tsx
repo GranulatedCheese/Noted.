@@ -331,7 +331,7 @@ export default function Notebook() {
         <div className="absolute inset-0 z-0">
           {activePageId ? (
             <Tldraw
-              licenseKey={import.meta.env.TLDRAW_LICENSE_KEY}
+              licenseKey={import.meta.env.VITE_TLDRAW_LICENSE}
               persistenceKey={`noted-production-${activePageId}`}
               components={{
                 PageMenu: null,
