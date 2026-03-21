@@ -88,4 +88,4 @@ To enable AI gesture recognition, you must provide a Gemini API Key. Noted. stor
 
 ## 📝 License
 
-This project is for educational and personal productivity use.
+MIT
