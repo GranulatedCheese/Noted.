@@ -23,8 +23,9 @@ import {
   Redo,
 } from "lucide-react";
 import ConfirmModal from "../components/ConfirmModal";
-
 import { useAIGesture } from "../hooks/useAIGesture";
+import SettingsModal from "../components/SettingsModal";
+import { Settings } from "lucide-react";
 
 type TldrawColor =
   | "black"
@@ -42,6 +43,17 @@ function AIGestureEngine() {
   return null; // listener
 }
 
+function DarkModeSync({ isDarkMode }: { isDarkMode: boolean }) {
+  const editor = useEditor();
+
+  useEffect(() => {
+    editor.user.updateUserPreferences({
+      colorScheme: isDarkMode ? "dark" : "light",
+    });
+  }, [editor, isDarkMode]);
+
+  return null;
+}
 function ColorPicker() {
   const editor = useEditor();
 
@@ -182,7 +194,7 @@ function EdgeToolbar({ onNewPage }: { onNewPage: () => void }) {
 
         <div className="w-full h-px bg-zinc-200 dark:bg-[#1e1f22] my-1" />
 
-        {/* Noted controls */}
+        {/* canvas controls */}
         <button
           onClick={onNewPage}
           className="p-2 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-[#1e1f22] hover:text-[#5865F2] rounded-xl transition-colors"
@@ -209,6 +221,26 @@ export default function Notebook() {
   const [pages, setPages] = useState<Page[]>([]);
   const [activePageId, setActivePageId] = useState<string | null>(null);
   const [pageToDelete, setPageToDelete] = useState<string | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // NEW: State to track if the app is currently in dark mode
+  const [isDarkMode, setIsDarkMode] = useState(() =>
+    document.documentElement.classList.contains("dark"),
+  );
+
+  // NEW: Watch the HTML tag for the 'dark' class being toggled elsewhere
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -315,13 +347,21 @@ export default function Notebook() {
             </div>
           ))}
         </div>
-
-        <div className="p-4 border-t border-zinc-200 dark:border-[#1e1f22]">
+        <div className="p-4 border-t border-zinc-200/80 dark:border-zinc-800/80 flex gap-2">
           <button
             onClick={handleCreatePage}
             className="flex items-center justify-center gap-2 w-full p-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-[#313338] dark:hover:bg-[#1e1f22] rounded-xl font-bold transition-colors"
           >
             <Plus size={20} /> New Page
+          </button>
+
+          {/* NEW: Settings Button */}
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="p-3 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 rounded-xl transition-colors flex-shrink-0"
+            title="Settings"
+          >
+            <Settings size={20} />
           </button>
         </div>
       </aside>
@@ -347,6 +387,7 @@ export default function Notebook() {
                 SharePanel: null,
               }}
             >
+              <DarkModeSync isDarkMode={isDarkMode} />
               <EdgeToolbar onNewPage={handleCreatePage} />
               <ColorPicker />
               <AIGestureEngine />
@@ -365,6 +406,10 @@ export default function Notebook() {
         message="Are you sure you want to delete this page? Your canvas strokes cannot be recovered."
         onCancel={() => setPageToDelete(null)}
         onConfirm={handleDeletePage}
+      />
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </div>
   );
