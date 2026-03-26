@@ -223,12 +223,10 @@ export default function Notebook() {
   const [pageToDelete, setPageToDelete] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // NEW: State to track if the app is currently in dark mode
   const [isDarkMode, setIsDarkMode] = useState(() =>
     document.documentElement.classList.contains("dark"),
   );
 
-  // NEW: Watch the HTML tag for the 'dark' class being toggled elsewhere
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setIsDarkMode(document.documentElement.classList.contains("dark"));
@@ -299,20 +297,22 @@ export default function Notebook() {
     );
 
   return (
-    <div className="flex h-screen w-full bg-[#fafaf9] dark:bg-[#313338] relative overflow-hidden">
+    <div className="flex h-screen w-full bg-[#fafaf9] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 font-sans overflow-hidden selection:bg-[#5865F2]/30 relative">
       {/* sidebar */}
-      <aside className="w-64 border-r border-zinc-200 dark:border-[#1e1f22] bg-white dark:bg-[#2b2d31] flex flex-col z-10">
-        <div className="h-16 flex items-center px-4 border-b border-zinc-200 dark:border-[#1e1f22]">
+      <aside className="w-64 relative z-20 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] border-r border-zinc-200/80 dark:border-zinc-800/80 bg-white/50 dark:bg-[#121214]/50 backdrop-blur-xl flex flex-col">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
           <button
             onClick={() => navigate("/backpack")}
-            className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors font-bold"
+            className="flex items-center gap-2 p-2 -ml-2 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white bg-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-xl transition-colors font-bold"
           >
             <ChevronLeft size={20} /> Backpack
           </button>
         </div>
 
-        <div className="p-4 border-b border-zinc-200 dark:border-[#1e1f22]">
-          <h2 className="font-black text-xl truncate">{notebook.title}</h2>
+        <div className="p-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
+          <h2 className="font-black text-xl truncate text-zinc-900 dark:text-white">
+            {notebook.title}
+          </h2>
         </div>
 
         <div className="flex-1 p-4 overflow-y-auto space-y-2">
@@ -322,11 +322,19 @@ export default function Notebook() {
                 onClick={() => setActivePageId(page.id!)}
                 className={`flex items-center gap-3 w-full p-3 pr-10 rounded-xl font-bold transition-all ${
                   activePageId === page.id
-                    ? "bg-[#5865F2] text-white shadow-md"
-                    : "hover:bg-zinc-100 dark:hover:bg-[#313338] text-zinc-700 dark:text-zinc-300"
+                    ? "bg-white dark:bg-zinc-800/80 dark:text-white shadow-md text-zinc-900"
+                    : "bg-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                 }`}
               >
-                <FileText size={18} />
+                <div
+                  className={
+                    activePageId === page.id
+                      ? `rounded-lg bg-[#5865F2]/10 text-[#5865F2] shrink-0 group-hover:scale-110 transition-transform`
+                      : ""
+                  }
+                >
+                  <FileText size={18} />
+                </div>
                 <span className="truncate">{page.title}</span>
               </button>
 
@@ -339,7 +347,7 @@ export default function Notebook() {
                 className={`absolute right-2 p-1.5 rounded-lg transition-all opacity-0 group-hover:opacity-100 z-10 ${
                   activePageId === page.id
                     ? "text-white/70 hover:text-white hover:bg-white/20"
-                    : "text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
+                    : "text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/20"
                 }`}
               >
                 <Trash2 size={16} />
@@ -347,21 +355,28 @@ export default function Notebook() {
             </div>
           ))}
         </div>
+
         <div className="p-4 border-t border-zinc-200/80 dark:border-zinc-800/80 flex gap-2">
           <button
             onClick={handleCreatePage}
-            className="flex items-center justify-center gap-2 w-full p-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-[#313338] dark:hover:bg-[#1e1f22] rounded-xl font-bold transition-colors"
+            className="flex items-center justify-center gap-2 w-full p-3 bg-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 hover:dark:text-white rounded-xl font-bold transition-colors group"
           >
-            <Plus size={20} /> New Page
+            <Plus
+              size={20}
+              className="shrink-0 group-hover:rotate-90 transition-transform duration-500"
+            />
+            New Page
           </button>
 
-          {/* NEW: Settings Button */}
           <button
             onClick={() => setIsSettingsOpen(true)}
-            className="p-3 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 rounded-xl transition-colors flex-shrink-0"
+            className="p-3 bg-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white rounded-xl transition-colors shrink-0 group"
             title="Settings"
           >
-            <Settings size={20} />
+            <Settings
+              size={20}
+              className="shrink-0 group-hover:rotate-90 transition-transform duration-500"
+            />
           </button>
         </div>
       </aside>
