@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import {
@@ -25,6 +25,7 @@ import {
 import ConfirmModal from "../components/ConfirmModal";
 import { useAIGesture } from "../hooks/useAIGesture";
 import SettingsModal from "../components/SettingsModal";
+import { AIResponseShapeUtil } from "../components/AIResponseShape";
 import { Settings } from "lucide-react";
 
 type TldrawColor =
@@ -133,18 +134,53 @@ function ColorPicker() {
 function EdgeToolbar({ onNewPage }: { onNewPage: () => void }) {
   const editor = useEditor();
   const [isToolbarVisible, setIsToolbarVisible] = useState(false);
+  const gestureRef = useRef<{ startX: number; startY: number } | null>(null);
 
-  // toolbar
   return (
     <>
+      {/* Right-edge swipe zone: swipe left to reveal toolbar */}
       <div
-        className="absolute right-0 top-1/4 bottom-1/4 w-8 z-40 pointer-events-auto"
-        onMouseEnter={() => setIsToolbarVisible(true)}
-      />
+        className="absolute right-0 top-0 bottom-0 w-5 z-40 pointer-events-auto flex items-center justify-end"
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          gestureRef.current = { startX: e.clientX, startY: e.clientY };
+          (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+        }}
+        onPointerMove={(e) => {
+          e.stopPropagation();
+          if (!gestureRef.current) return;
+          if (gestureRef.current.startX - e.clientX > 40) {
+            setIsToolbarVisible(true);
+            (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+            gestureRef.current = null;
+          }
+        }}
+        onPointerUp={(e) => {
+          e.stopPropagation();
+          gestureRef.current = null;
+        }}
+      >
+        <div
+          className={`w-1 h-8 rounded-full bg-zinc-400/60 dark:bg-zinc-500/60 mr-0.5 transition-opacity duration-300 ${
+            isToolbarVisible ? "opacity-0" : "opacity-100"
+          }`}
+        />
+      </div>
 
       <div
-        onMouseEnter={() => setIsToolbarVisible(true)}
-        onMouseLeave={() => setIsToolbarVisible(false)}
+        onPointerDown={(e) => {
+          gestureRef.current = { startX: e.clientX, startY: e.clientY };
+        }}
+        onPointerMove={(e) => {
+          if (!gestureRef.current) return;
+          if (e.clientX - gestureRef.current.startX > 40) {
+            setIsToolbarVisible(false);
+            gestureRef.current = null;
+          }
+        }}
+        onPointerUp={() => {
+          gestureRef.current = null;
+        }}
         className={`absolute right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 p-3 bg-white/90 dark:bg-[#2b2d31]/90 backdrop-blur-md border border-zinc-200 dark:border-[#1e1f22] shadow-2xl rounded-2xl transition-all duration-300 ease-out pointer-events-auto ${
           isToolbarVisible
             ? "translate-x-0 opacity-100"
@@ -388,6 +424,7 @@ export default function Notebook() {
             <Tldraw
               licenseKey={import.meta.env.VITE_TLDRAW_LICENSE}
               persistenceKey={`noted-production-${activePageId}`}
+              shapeUtils={[AIResponseShapeUtil]}
               components={{
                 PageMenu: null,
                 Toolbar: null,

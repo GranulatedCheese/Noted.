@@ -4,9 +4,8 @@ import {
   type TLShapeId,
   type TLDrawShape,
   createShapeId,
-  toRichText,
 } from "tldraw";
-import { askGemini } from "./aiService";
+import { askAI } from "./aiService";
 
 export function useAIGesture() {
   const editor = useEditor();
@@ -100,20 +99,15 @@ export function useAIGesture() {
 
     if (shapesToCapture.length === 0) return;
 
-    // thinking note for user
     const responseNoteId = createShapeId();
     editor.createShape({
       id: responseNoteId,
-      type: "text",
+      type: "ai-response",
       x: bounds.maxX + 40,
       y: bounds.minY,
-      props: {
-        richText: toRichText("Thinking..."),
-        color: "grey",
-      },
+      props: { markdown: "", isThinking: true, w: 380, h: 60 },
     } as any);
 
-    // 4. Export to b64
     const result = await editor.toImage(
       shapesToCapture.map((s) => s.id),
       { format: "png", background: true, padding: 16 },
@@ -126,29 +120,20 @@ export function useAIGesture() {
       const base64data = reader.result as string;
 
       try {
-        // 5. Prompt Gemini
-        const answer = await askGemini(base64data, type);
-
-        // 6. updates thinking note with answer
+        const answer = await askAI(base64data, type);
         editor.updateShape({
           id: responseNoteId,
-          type: "text",
-          props: {
-            richText: toRichText(answer ?? "No response from AI"),
-            color: "blue",
-          },
+          type: "ai-response",
+          props: { markdown: answer ?? "No response from AI", isThinking: false },
         } as any);
       } catch (err) {
         console.error(err);
-        // Update the note to show the error
         editor.updateShape({
           id: responseNoteId,
-          type: "text",
+          type: "ai-response",
           props: {
-            richText: toRichText(
-              `AI Error: ${err instanceof Error ? err.message : "Unknown"}`,
-            ),
-            color: "red",
+            markdown: `**Error:** ${err instanceof Error ? err.message : "Unknown error"}`,
+            isThinking: false,
           },
         } as any);
       }
