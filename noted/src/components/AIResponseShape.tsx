@@ -1,5 +1,10 @@
 import { useEffect, useRef } from "react";
-import { BaseBoxShapeUtil, HTMLContainer, useEditor, type TLBaseShape } from "@tldraw/editor";
+import {
+  BaseBoxShapeUtil,
+  HTMLContainer,
+  useEditor,
+  type TLBaseShape,
+} from "@tldraw/editor";
 import { T } from "@tldraw/validate";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -16,6 +21,7 @@ export type AIResponseShape = TLBaseShape<"ai-response", AIResponseShapeProps>;
 const CARD_WIDTH = 380;
 const PADDING = 24;
 
+// @ts-expect-error
 export class AIResponseShapeUtil extends BaseBoxShapeUtil<AIResponseShape> {
   static override type = "ai-response" as const;
   static override props = {
@@ -38,22 +44,27 @@ export class AIResponseShapeUtil extends BaseBoxShapeUtil<AIResponseShape> {
       if (!contentRef.current) return;
       const measured = contentRef.current.scrollHeight + PADDING;
       if (Math.abs(measured - shape.props.h) > 4) {
-        editor.updateShape<AIResponseShape>({
+        editor.updateShape({
           id: shape.id,
           type: "ai-response",
           props: { h: measured },
-        });
+        } as any);
       }
     }, [shape.props.markdown, shape.props.isThinking]);
 
     return (
-      <HTMLContainer id={shape.id} style={{ pointerEvents: "none", userSelect: "none" }}>
+      <HTMLContainer
+        id={shape.id}
+        style={{ pointerEvents: "none", userSelect: "none" }}
+      >
         <div
           ref={contentRef}
           style={{
             width: shape.props.w,
             padding: "14px 16px",
-            background: isDark ? "rgba(43,45,49,0.97)" : "rgba(255,255,255,0.97)",
+            background: isDark
+              ? "rgba(43,45,49,0.97)"
+              : "rgba(255,255,255,0.97)",
             border: `1px solid ${isDark ? "#1e1f22" : "#e4e4e7"}`,
             borderRadius: "14px",
             boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
@@ -65,7 +76,12 @@ export class AIResponseShapeUtil extends BaseBoxShapeUtil<AIResponseShape> {
           }}
         >
           {shape.props.isThinking ? (
-            <span style={{ color: isDark ? "#71717a" : "#a1a1aa", fontStyle: "italic" }}>
+            <span
+              style={{
+                color: isDark ? "#71717a" : "#a1a1aa",
+                fontStyle: "italic",
+              }}
+            >
               Thinking…
             </span>
           ) : (
@@ -73,22 +89,50 @@ export class AIResponseShapeUtil extends BaseBoxShapeUtil<AIResponseShape> {
               remarkPlugins={[remarkGfm]}
               components={{
                 h1: ({ children }) => (
-                  <h1 style={{ fontSize: "1.3em", fontWeight: 700, margin: "0 0 8px" }}>{children}</h1>
+                  <h1
+                    style={{
+                      fontSize: "1.3em",
+                      fontWeight: 700,
+                      margin: "0 0 8px",
+                    }}
+                  >
+                    {children}
+                  </h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 style={{ fontSize: "1.15em", fontWeight: 700, margin: "10px 0 6px" }}>{children}</h2>
+                  <h2
+                    style={{
+                      fontSize: "1.15em",
+                      fontWeight: 700,
+                      margin: "10px 0 6px",
+                    }}
+                  >
+                    {children}
+                  </h2>
                 ),
                 h3: ({ children }) => (
-                  <h3 style={{ fontSize: "1.05em", fontWeight: 600, margin: "8px 0 4px" }}>{children}</h3>
+                  <h3
+                    style={{
+                      fontSize: "1.05em",
+                      fontWeight: 600,
+                      margin: "8px 0 4px",
+                    }}
+                  >
+                    {children}
+                  </h3>
                 ),
                 p: ({ children }) => (
                   <p style={{ margin: "0 0 8px" }}>{children}</p>
                 ),
                 ul: ({ children }) => (
-                  <ul style={{ margin: "0 0 8px", paddingLeft: "18px" }}>{children}</ul>
+                  <ul style={{ margin: "0 0 8px", paddingLeft: "18px" }}>
+                    {children}
+                  </ul>
                 ),
                 ol: ({ children }) => (
-                  <ol style={{ margin: "0 0 8px", paddingLeft: "18px" }}>{children}</ol>
+                  <ol style={{ margin: "0 0 8px", paddingLeft: "18px" }}>
+                    {children}
+                  </ol>
                 ),
                 li: ({ children }) => (
                   <li style={{ margin: "2px 0" }}>{children}</li>
@@ -128,7 +172,9 @@ export class AIResponseShapeUtil extends BaseBoxShapeUtil<AIResponseShape> {
                   );
                 },
                 pre: ({ children }) => (
-                  <pre style={{ margin: "4px 0 8px", overflow: "visible" }}>{children}</pre>
+                  <pre style={{ margin: "4px 0 8px", overflow: "visible" }}>
+                    {children}
+                  </pre>
                 ),
                 blockquote: ({ children }) => (
                   <blockquote
