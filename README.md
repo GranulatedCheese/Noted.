@@ -1,91 +1,102 @@
 # Noted.
 
-**The AI-integrated canvas for the quantitative thinker.**
+**AI-powered canvas note-taking for students.**
 
-Noted. is a modern, high-performance canvas application built with **tldraw**. It bridges the gap between freeform handwriting and computational intelligence. By recognizing natural gestures like boxes and underlines, Noted. allows users to query AI models directly from their sketches to solve equations, define terms, or explain complex concepts.
-
----
-
-## ✨ Features
-
-- **Markup Intelligence**: Draw a box to solve equations or an underline to define terms.
-- **Spatial Context**: AI responses appear as persistent, styled shapes directly next to your notes.
+Draw your notes. Underline a term to define it. Box an equation to solve it. AI responses appear directly on your canvas — no context switching, no copy-pasting.
 
 ---
 
-## 🚀 Getting Started Locally
+## Features
 
-Follow these steps to get your development environment running.
+- **Underline to Define** — draw a flat line under any word or phrase and get an instant, context-aware definition pinned to your canvas
+- **Box to Solve** — draw a closed shape around an equation or concept and get a step-by-step solution
+- **Multi-provider AI** — works with Gemini (default), ChatGPT (GPT-4o Mini), or Claude (Haiku); bring your own API key
+- **Multi-page notebooks** — organize your work into named notebooks, each with unlimited pages
+- **Swipe toolbar** — swipe left from the right edge of the canvas to reveal drawing tools; swipe right to hide
+- **Markdown responses** — AI cards render full markdown: headers, code blocks, tables, bullet lists
+- **Dark / light mode**
+- **100% local** — all notes stored in your browser via IndexedDB; no accounts, no servers, no tracking
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher recommended)
-- **npm** or **pnpm**
+- Node.js v18+
+- npm
 
 ### Installation
 
-1. **Clone the repository**:
+```bash
+git clone https://github.com/GranulatedCheese/Noted.
+cd "Noted./noted"
+npm install
+npm run dev
+```
 
-   ```bash
-   git clone https://github.com/GranulatedCheese/Noted.
-   cd noted
-   ```
-
-2. **Install dependencies**:
-
-   ```bash
-   npm install
-   ```
-
-3. **Install the AI SDK**:
-
-   ```bash
-   npm install @google/generative-ai
-   ```
-
-4. **Start the development server**:
-
-   ```bash
-   npm run dev
-   ```
-
-5. **Open the app**: Navigate to `http://localhost:5173` in your browser.
+Open `http://localhost:3000`.
 
 ---
 
-## 🔑 Adding Your API Key
+## Adding Your API Key
 
-To enable AI gesture recognition, you must provide a Gemini API Key. Noted. stores this key locally in your browser's `localStorage` — it is never sent to a backend server.
+Noted. requires an API key from your chosen AI provider. Keys are stored in your browser's `localStorage` and are never sent to any server.
 
-1. **Get a Key**: Visit [Google AI Studio](https://aistudio.google.com) and generate a free API key for Gemini.
-2. **Open Settings**: In the Noted. app, navigate to your Settings or Backpack panel.
-3. **Enter Key**: Paste your key into the field labeled **Gemini API Key**.
-4. **Save**: The key is saved instantly. You can now use gesture triggers on the canvas.
+1. Open the app and click the **Settings** icon (gear icon in the sidebar)
+2. Select your preferred AI provider: **Gemini**, **ChatGPT**, or **Claude**
+3. Paste your API key and click **Save Changes**
 
-> **Note:** Using an API key can cost money and credits. Please ensure you have that all figured out first. This program is still in development so bugs can occur. It is NOT my fault if an unexpected amount of credits are used. Use program with caution!
+| Provider | Where to get a key |
+|---|---|
+| Gemini (default) | [Google AI Studio](https://aistudio.google.com) |
+| ChatGPT | [OpenAI Platform](https://platform.openai.com/api-keys) |
+| Claude | [Anthropic Console](https://console.anthropic.com) |
 
----
-
-## 🖋️ How to Use AI Gestures
-
-| Gesture       | Action                                                                              | Result                                                             |
-| ------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| **Box**       | Draw a closed loop (square, circle, or messy box) around a math problem or concept. | Gemini solves the equation or explains the concept in a blue note. |
-| **Underline** | Draw a long, flat line under a specific word or phrase.                             | Gemini provides a concise definition of the underlined text.       |
+> API usage may incur costs depending on your provider and usage volume. Noted. uses lightweight models (Gemini 2.0 Flash Lite, GPT-4o Mini, Claude Haiku) to keep costs low.
 
 ---
 
-## 🛠️ Tech Stack
+## How to Use AI Gestures
 
-| Layer         | Technology     |
-| ------------- | -------------- |
-| Framework     | React + Vite   |
-| Canvas Engine | tldraw         |
-| AI Model      | Gemini 3 Flash |
-| Styling       | Tailwind CSS   |
+| Gesture | How to draw it | What happens |
+|---|---|---|
+| **Underline** | Long, flat horizontal stroke under a word | AI defines or explains the underlined term in context |
+| **Box** | Closed loop (square, circle, or rough shape) around content | AI solves the equation or explains the boxed concept step-by-step |
+
+When a gesture is detected, the stroke turns **red** (underline) or **blue** (box) to confirm recognition, and a response card appears next to it on the canvas.
 
 ---
 
-## 📝 License
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Canvas | tldraw 4 |
+| AI providers | Google Gemini, OpenAI, Anthropic |
+| Local storage | Dexie (IndexedDB) |
+| Styling | Tailwind CSS 4 |
+| Markdown | react-markdown + remark-gfm |
+
+---
+
+## Project Structure
+
+```
+noted/
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx            # Landing
+│   ├── backpack/page.tsx   # Notebook library
+│   └── notebook/[id]/      # Canvas workspace
+├── components/             # AIResponseShape, SettingsModal, ConfirmModal
+├── hooks/                  # useAIGesture
+└── lib/                    # db.ts (Dexie), aiService.ts
+```
+
+---
+
+## License
 
 MIT
