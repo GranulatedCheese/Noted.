@@ -1,30 +1,26 @@
 # Noted.
 
-**AI-powered canvas note-taking for students.**
+**AI-powered Notebook for students.**
 
-Draw your notes. Underline a term to define it. Box an equation to solve it. AI responses appear directly on your canvas — no context switching, no copy-pasting.
-
----
-
-## Features
-
-- **Underline to Define** — draw a flat line under any word or phrase and get an instant, context-aware definition pinned to your canvas
-- **Box to Solve** — draw a closed shape around an equation or concept and get a step-by-step solution
-- **Multi-provider AI** — works with Gemini (default), ChatGPT (GPT-4o Mini), or Claude (Haiku); bring your own API key
-- **Multi-page notebooks** — organize your work into named notebooks, each with unlimited pages
-- **Swipe toolbar** — swipe left from the right edge of the canvas to reveal drawing tools; swipe right to hide
-- **Markdown responses** — AI cards render full markdown: headers, code blocks, tables, bullet lists
-- **Dark / light mode**
-- **100% local** — all notes stored in your browser via IndexedDB; no accounts, no servers, no tracking
+Noted. is a modern, high-performance canvas application built with **tldraw**. It bridges the gap between freeform handwriting and computational intelligence. By recognizing natural gestures like boxes and underlines, Noted. allows users to query AI models directly from their sketches to solve equations, define terms, or explain complex concepts.
 
 ---
 
-## Getting Started
+## ✨ Features
+
+- **Markup Intelligence**: Draw a box to solve equations or an underline to define terms.
+- **Spatial Context**: AI responses appear as persistent, styled shapes directly next to your notes.
+
+---
+
+## 🚀 Getting Started Locally
+
+Follow these steps to get your development environment running.
 
 ### Prerequisites
 
-- Node.js v18+
-- npm
+- **Node.js** (v18 or higher recommended)
+- **npm**
 
 ### Installation
 
