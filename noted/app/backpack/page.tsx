@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { db, type Notebook } from "@/lib/db";
 import {
   Menu,
@@ -183,8 +184,8 @@ export default function BackpackPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 content-start pb-20">
               {notebooks.map((nb) => (
                 <div key={nb.id} className="relative group">
-                  <button
-                    onClick={() => router.push(`/notebook/${nb.id}`)}
+                  <Link
+                    href={`/notebook/${nb.id}`}
                     className="w-full flex flex-col items-start p-6 h-48 rounded-[2rem] border border-zinc-200/80 dark:border-zinc-800 bg-white/40 dark:bg-[#121214]/60 backdrop-blur-md hover:bg-white dark:hover:bg-[#18181b] hover:border-[#5865F2]/50 dark:hover:border-[#5865F2]/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-left overflow-hidden"
                   >
                     {/* Subtle inner hover glow */}
@@ -202,7 +203,7 @@ export default function BackpackPage() {
                         Created {nb.createdAt.toLocaleDateString()}
                       </p>
                     </div>
-                  </button>
+                  </Link>
 
                   <button
                     onClick={(e) => {
