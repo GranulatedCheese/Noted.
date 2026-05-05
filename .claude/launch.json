@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "noted-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "noted", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

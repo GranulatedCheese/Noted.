@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import {
   Tldraw,
@@ -8,8 +10,7 @@ import {
   DefaultSizeStyle,
   useValue,
 } from "tldraw";
-import "tldraw/tldraw.css";
-import { db, type Notebook as NotebookType, type Page } from "../db/db";
+import { db, type Notebook as NotebookType, type Page } from "@/lib/db";
 import {
   ChevronLeft,
   Plus,
@@ -22,10 +23,10 @@ import {
   Undo,
   Redo,
 } from "lucide-react";
-import ConfirmModal from "../components/ConfirmModal";
-import { useAIGesture } from "../hooks/useAIGesture";
-import SettingsModal from "../components/SettingsModal";
-import { AIResponseShapeUtil } from "../components/AIResponseShape";
+import ConfirmModal from "@/components/ConfirmModal";
+import { useAIGesture } from "@/hooks/useAIGesture";
+import SettingsModal from "@/components/SettingsModal";
+import { AIResponseShapeUtil } from "@/components/AIResponseShape";
 import { Settings } from "lucide-react";
 
 type TldrawColor =
@@ -249,9 +250,10 @@ function EdgeToolbar({ onNewPage }: { onNewPage: () => void }) {
   );
 }
 
-export default function Notebook() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function NotebookPage() {
+  const params = useParams<{ id: string }>();
+  const id = params.id;
+  const router = useRouter();
 
   const [notebook, setNotebook] = useState<NotebookType | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
@@ -259,11 +261,11 @@ export default function Notebook() {
   const [pageToDelete, setPageToDelete] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const [isDarkMode, setIsDarkMode] = useState(() =>
-    document.documentElement.classList.contains("dark"),
-  );
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+
     const observer = new MutationObserver(() => {
       setIsDarkMode(document.documentElement.classList.contains("dark"));
     });
@@ -338,7 +340,7 @@ export default function Notebook() {
       <aside className="w-64 relative z-20 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] border-r border-zinc-200/80 dark:border-zinc-800/80 bg-white/50 dark:bg-[#121214]/50 backdrop-blur-xl flex flex-col">
         <div className="h-16 flex items-center justify-between px-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
           <button
-            onClick={() => navigate("/backpack")}
+            onClick={() => router.push("/backpack")}
             className="flex items-center gap-2 p-2 -ml-2 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white bg-transparent hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded-xl transition-colors font-bold"
           >
             <ChevronLeft size={20} /> Backpack
@@ -422,7 +424,7 @@ export default function Notebook() {
         <div className="absolute inset-0 z-0">
           {activePageId ? (
             <Tldraw
-              licenseKey={import.meta.env.VITE_TLDRAW_LICENSE}
+              licenseKey={process.env.NEXT_PUBLIC_TLDRAW_LICENSE}
               persistenceKey={`noted-production-${activePageId}`}
               shapeUtils={[AIResponseShapeUtil]}
               components={{

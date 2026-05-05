@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import {
   PenTool,
   BoxSelect,
@@ -10,7 +12,7 @@ import {
 } from "lucide-react";
 
 export default function Landing() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
@@ -75,7 +77,7 @@ export default function Landing() {
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button
-              onClick={() => navigate("/backpack")}
+              onClick={() => router.push("/backpack")}
               className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-[0_0_40px_-10px_rgba(88,101,242,0.4)]"
             >
               Open Backpack
@@ -129,7 +131,7 @@ export default function Landing() {
                   Underline to Define
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-400 max-w-md font-medium leading-relaxed shrink-0">
-                  Don't lose your place. Draw a line under complex terms and
+                  Don&apos;t lose your place. Draw a line under complex terms and
                   context-aware definitions pin themselves to your canvas.
                 </p>
 

@@ -1,6 +1,8 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { db, type Notebook } from "../db/db";
+import { useRouter } from "next/navigation";
+import { db, type Notebook } from "@/lib/db";
 import {
   Menu,
   Settings,
@@ -10,11 +12,11 @@ import {
   Trash2,
   BookOpen,
 } from "lucide-react";
-import ConfirmModal from "../components/ConfirmModal";
-import SettingsModal from "../components/SettingsModal";
+import ConfirmModal from "@/components/ConfirmModal";
+import SettingsModal from "@/components/SettingsModal";
 
-export default function Backpack() {
-  const navigate = useNavigate();
+export default function BackpackPage() {
+  const router = useRouter();
   const [notebooks, setNotebooks] = useState<Notebook[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -182,7 +184,7 @@ export default function Backpack() {
               {notebooks.map((nb) => (
                 <div key={nb.id} className="relative group">
                   <button
-                    onClick={() => navigate(`/notebook/${nb.id}`)}
+                    onClick={() => router.push(`/notebook/${nb.id}`)}
                     className="w-full flex flex-col items-start p-6 h-48 rounded-[2rem] border border-zinc-200/80 dark:border-zinc-800 bg-white/40 dark:bg-[#121214]/60 backdrop-blur-md hover:bg-white dark:hover:bg-[#18181b] hover:border-[#5865F2]/50 dark:hover:border-[#5865F2]/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-left overflow-hidden"
                   >
                     {/* Subtle inner hover glow */}

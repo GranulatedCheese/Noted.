@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import {
   useEditor,
@@ -5,7 +7,7 @@ import {
   type TLDrawShape,
   createShapeId,
 } from "tldraw";
-import { askAI } from "./aiService";
+import { askAI } from "@/lib/aiService";
 
 export function useAIGesture() {
   const editor = useEditor();
